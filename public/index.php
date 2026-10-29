@@ -17,9 +17,73 @@ require_once __DIR__ . '/../src/Estacionamento.php';
 // 2. Aqui eu crio o objeto do estacionamento.
 $estacionamento = new Estacionamento("Estacionamento Central");
 
-// 3. O formulário POST será implementado depois.
+// 3. Aqui eu preparo as mensagens do formulário.
+$mensagem = '';
+$erro = '';
+$resultado = null;
 
-// 4. A resposta JSON também será adicionada depois.
+// Aqui eu verifico se o usuário enviou o formulário.
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    try {
+        // Aqui eu recebo os dados digitados no formulário.
+        $tipo = $_POST['tipo'] ?? '';
+        $placa = $_POST['placa'] ?? '';
+        $modelo = $_POST['modelo'] ?? '';
+        $horas = $_POST['horas'] ?? '';
+
+        // Confiro se os dados recebidos são textos.
+        if (
+            !is_string($tipo) ||
+            !is_string($placa) ||
+            !is_string($modelo) ||
+            !is_string($horas)
+        ) {
+            throw new Exception("Dados inválidos.");
+        }
+
+        // Não deixo o usuário enviar um tempo vazio ou inválido.
+        if (!is_numeric($horas)) {
+            throw new Exception("Informe um tempo válido.");
+        }
+
+        // Aqui eu crio o veículo de acordo com o tipo escolhido.
+        if ($tipo === 'carro') {
+            $veiculo = new Carro($placa, $modelo);
+
+        } elseif ($tipo === 'moto') {
+            $veiculo = new Moto($placa, $modelo);
+
+        } elseif ($tipo === 'caminhonete') {
+            $veiculo = new Caminhonete($placa, $modelo);
+
+        } else {
+            throw new Exception("Escolha um tipo de veículo válido.");
+        }
+
+        // Aqui eu crio uma estadia para esse veículo.
+        $estadia = new Estadia($veiculo);
+
+        // Registro quantas horas o veículo ficou estacionado.
+        $estadia->encerrar((float) $horas);
+
+        // Adiciono a estadia ao estacionamento.
+        $estacionamento->adicionarEstadia($estadia);
+
+        // Guardo os dados para mostrar o resultado na página.
+        $resultado = $estadia->paraArray();
+
+        // Mostro uma mensagem confirmando o cadastro.
+        $mensagem = "Estadia registrada com sucesso!";
+
+    } catch (Exception $e) {
+
+        // Se acontecer algum erro, mostro a mensagem sem derrubar o site.
+        $erro = $e->getMessage();
+    }
+}
+
+// 4. A resposta JSON será adicionada na próxima etapa.
 
 // 5. Aqui eu verifico qual página o usuário quer abrir.
 // Se não informar nenhuma, o sistema abre a página inicial.
@@ -81,23 +145,114 @@ if (!is_string($pagina) || !in_array($pagina, $paginasPermitidas, true)) {
 
         <?php elseif ($pagina === 'veiculos'): ?>
 
-            <!-- Página de gerenciamento dos veículos. -->
-            <h2>Gerenciamento de Veículos</h2>
+            <!-- Aqui eu mostro o formulário de cadastro. -->
+            <h2>Cadastrar veículo</h2>
 
             <p>
-                Nesta página vamos cadastrar carros,
-                motos e caminhonetes.
+                Preencha os dados do veículo para calcular
+                o valor da estadia.
             </p>
 
-            <p>
-                Cada tipo de veículo possui sua própria tarifa.
-            </p>
+            <!-- Se acontecer algum erro, mostro a mensagem. -->
+            <?php if ($erro !== ''): ?>
 
-            <ul>
-                <li>Carro: R$ 6,00 por hora</li>
-                <li>Moto: R$ 3,00 por hora</li>
-                <li>Caminhonete: R$ 8,00 por hora</li>
-            </ul>
+                <div class="erro">
+                    <?= htmlspecialchars($erro, ENT_QUOTES, 'UTF-8') ?>
+                </div>
+
+            <?php endif; ?>
+
+            <!-- Se o cadastro funcionar, mostro a confirmação. -->
+            <?php if ($mensagem !== ''): ?>
+
+                <div class="sucesso">
+                    <?= htmlspecialchars($mensagem, ENT_QUOTES, 'UTF-8') ?>
+                </div>
+
+            <?php endif; ?>
+
+            <!-- Aqui eu envio os dados para o próprio index.php. -->
+            <form method="POST" action="?pagina=veiculos">
+
+                <label for="tipo">Tipo de veículo</label>
+
+                <select id="tipo" name="tipo" required>
+                    <option value="">Selecione o tipo</option>
+                    <option value="carro">Carro</option>
+                    <option value="moto">Moto</option>
+                    <option value="caminhonete">Caminhonete</option>
+                </select>
+
+                <label for="placa">Placa</label>
+
+                <input
+                    type="text"
+                    id="placa"
+                    name="placa"
+                    placeholder="Ex.: ABC1234"
+                    maxlength="7"
+                    required
+                >
+
+                <label for="modelo">Modelo</label>
+
+                <input
+                    type="text"
+                    id="modelo"
+                    name="modelo"
+                    placeholder="Ex.: Toyota Corolla"
+                    required
+                >
+
+                <label for="horas">Tempo estacionado (horas)</label>
+
+                <input
+                    type="number"
+                    id="horas"
+                    name="horas"
+                    min="0.1"
+                    step="0.1"
+                    placeholder="Ex.: 2"
+                    required
+                >
+
+                <button type="submit">
+                    Calcular estadia
+                </button>
+
+            </form>
+
+            <!-- Aqui eu mostro o resultado do cálculo. -->
+            <?php if ($resultado !== null): ?>
+
+                <div class="sucesso">
+
+                    <h3>Resultado da estadia</h3>
+
+                    <p>
+                        <strong>Placa:</strong>
+                        <?= htmlspecialchars($resultado['veiculo']['placa'], ENT_QUOTES, 'UTF-8') ?>
+                    </p>
+
+                    <p>
+                        <strong>Modelo:</strong>
+                        <?= htmlspecialchars($resultado['veiculo']['modelo'], ENT_QUOTES, 'UTF-8') ?>
+                    </p>
+
+                    <p>
+                        <strong>Tempo:</strong>
+                        <?= htmlspecialchars((string) $resultado['horas'], ENT_QUOTES, 'UTF-8') ?>
+                        hora(s)
+                    </p>
+
+                    <p>
+                        <strong>Valor a pagar:</strong>
+                        R$ <?= number_format($resultado['valor'], 2, ',', '.') ?>
+                    </p>
+
+                </div>
+
+            <?php endif; ?>
 
         <?php elseif ($pagina === 'sobre'): ?>
 
