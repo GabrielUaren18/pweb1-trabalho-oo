@@ -83,7 +83,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// 4. A resposta JSON será adicionada na próxima etapa.
+
+ // 4. Aqui eu verifico se o usuário pediu os dados em JSON.
+$formato = $_GET['formato'] ?? 'html';
+
+// Se o formato escolhido for JSON, eu devolvo os dados do estacionamento.
+if ($formato === 'json') {
+
+    // Aqui eu aviso ao navegador que a resposta será JSON, e não HTML.
+    header('Content-Type: application/json; charset=utf-8');
+
+    // Transformo os dados do estacionamento em JSON.
+    echo json_encode(
+        $estacionamento->paraArray(),
+        JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT
+    );
+
+    // Aqui eu encerro o PHP para não mostrar o HTML depois do JSON.
+    exit;
+}
+
 
 // 5. Aqui eu verifico qual página o usuário quer abrir.
 // Se não informar nenhuma, o sistema abre a página inicial.
