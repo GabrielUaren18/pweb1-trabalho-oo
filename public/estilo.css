@@ -293,3 +293,47 @@ footer p {
         font-size: 23px;
     }
 }
+
+
+/* ==========================================
+   HISTÓRICO DE ESTADIAS
+   ========================================== */
+
+/* Aqui eu organizo a tabela do histórico. */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: #FFFFFF;
+}
+
+/* Aqui eu deixo o cabeçalho azul-escuro. */
+table th {
+    background-color: #163A63;
+    color: #FFFFFF;
+    padding: 14px;
+    text-align: left;
+}
+
+/* Aqui eu organizo as informações de cada veículo. */
+table td {
+    padding: 14px;
+    border-bottom: 1px solid #DDF7F2;
+}
+
+/* Aqui eu alterno as cores das linhas. */
+table tbody tr:nth-child(even) {
+    background-color: #DDF7F2;
+}
+
+/* Aqui eu destaco a linha quando passo o mouse. */
+table tbody tr:hover {
+    background-color: #F5D77B;
+}
+
+/* Aqui eu separo o título do histórico do formulário. */
+form + h2,
+.sucesso + h2 {
+    margin-top: 35px;
+}
