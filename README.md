@@ -3,7 +3,7 @@
 > Trabalho individual de Programação Web I (IFCE Campus Boa Viagem): sistema web orientado a objetos em PHP.
 
 **Autor:** Gabriel Uaren Melo Sousa
-**Tema:** Sistema de Estacionamento (número do tema a confirmar no enunciado)
+**Tema:** 08 — Estacionamento
 **Vídeo:** Aguardando gravação e publicação.
 
 ## O problema
