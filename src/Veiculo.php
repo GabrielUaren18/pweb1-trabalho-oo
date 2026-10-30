@@ -35,6 +35,18 @@ class Veiculo
         return $this->modelo;
     }
 
+    // Aqui eu permito alterar o modelo do veículo.
+public function setModelo(string $modelo): void
+{
+    // Não aceito um modelo vazio.
+    if (trim($modelo) === '') {
+        throw new Exception("O modelo é obrigatório.");
+    }
+
+    // Se estiver tudo certo, guardo o novo modelo.
+    $this->modelo = trim($modelo);
+}
+
     // Essa é a tarifa padrão por hora.
     // Cada classe filha poderá ter um valor diferente.
     public function calcularTarifa(float $horas): float
