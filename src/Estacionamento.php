@@ -42,7 +42,8 @@ class Estacionamento
             $total += $estadia->calcularValor();
         }
 
-        return $total;
+        // Arredondo o total para duas casas decimais.
+        return round($total, 2);
     }
 
     // Aqui eu devolvo o nome do estacionamento.

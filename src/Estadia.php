@@ -43,8 +43,8 @@ class Estadia
     // Aqui eu calculo o valor da estadia.
     public function calcularValor(): float
     {
-        // Cada tipo de veículo calcula sua própria tarifa.
-        return $this->veiculo->calcularTarifa($this->horas);
+        // Arredondo o valor da estadia para duas casas decimais.
+    return round($this->veiculo->calcularTarifa($this->horas), 2);
     }
 
     // Esse método devolve o veículo da estadia.
