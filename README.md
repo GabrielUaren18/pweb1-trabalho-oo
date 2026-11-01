@@ -2,9 +2,9 @@
 
 > Trabalho individual de Programação Web I (IFCE Campus Boa Viagem): sistema web orientado a objetos em PHP.
 
-**Autor:** Gabriel Uaren Melo Sousa
-**Tema:** 08 — Estacionamento
-**Vídeo:** Aguardando gravação e publicação.
+**Autor:** Gabriel Uaren Melo Sousa  
+**Tema:** 08 — Estacionamento  
+**Vídeo:** https://www.youtube.com/watch?v=XufGEiNZImQ
 
 ## O problema
 
@@ -40,7 +40,7 @@ O sistema possui as seguintes telas:
 
 **3. Página sobre:** apresenta informações sobre o sistema e os conceitos de orientação a objetos utilizados.
 
-**Prints das telas:** serão adicionados à pasta `docs/` antes da entrega.
+**Prints das telas:** disponíveis no relatório do projeto, localizado em [docs/relatorio.pdf](docs/relatorio.pdf).
 
 ## Rotas
 
@@ -117,10 +117,10 @@ Nos testes da aplicação web, o histórico permaneceu com nove estadias e total
 | curl | Testar as rotas HTTP, o JSON e o envio de formulários |
 | Navegador e DevTools | Visualizar o sistema e conferir a apresentação das páginas |
 | LLM: ChatGPT | Auxiliar na compreensão do PHP, na implementação, nos testes e na documentação |
-| Gravador de tela | A definir antes da gravação do vídeo |
+| Gravador de tela do Windows | Gravar a demonstração do sistema e do código para o vídeo de apresentação |
 
 ## Repositório
 
 Código-fonte disponível em:
 
-https://github.com/GabrielUaren18/pweb1-trabalho-oo
+https://github.com/GabrielUaren18/pweb1-trabalho-oo/tree/main
